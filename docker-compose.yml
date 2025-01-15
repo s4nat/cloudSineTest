@@ -42,6 +42,9 @@ services:
 
 volumes:
   postgres_data:
+  certbot-etc:
+  certbot-var:
+  webroot-path:
 
 networks:
   app-network:
