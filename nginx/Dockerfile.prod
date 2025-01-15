@@ -1,0 +1,20 @@
+# Build stage for React app
+FROM node:18-alpine AS frontend-builder
+WORKDIR /app
+COPY frontend/package*.json ./
+RUN npm install
+COPY frontend/ .
+RUN npm run build
+
+# Final nginx stage
+FROM nginx:alpine
+# Copy frontend build
+COPY --from=frontend-builder /app/build /usr/share/nginx/html
+# Copy nginx configuration
+COPY nginx/nginx.prod.conf /etc/nginx/nginx.conf
+
+# Expose ports
+EXPOSE 80 443
+
+# Start Nginx
+CMD ["nginx", "-g", "daemon off;"]
