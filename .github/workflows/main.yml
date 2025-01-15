@@ -8,8 +8,8 @@ on:
 
 env:
   AWS_REGION: ${{ secrets.AWS_REGION }}
-  ECR_REPOSITORY_FRONTEND: virusscanner-frontend
-  ECR_REPOSITORY_BACKEND: virusscanner-backend
+  ECR_REPOSITORY_FRONTEND: viruscanner-frontend
+  ECR_REPOSITORY_BACKEND: viruscanner-backend
   EC2_HOST: ${{ secrets.EC2_HOST }}
 
 jobs:
@@ -52,16 +52,13 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '20'
+        node-version: '18'
 
     - name: Test Frontend
       working-directory: ./frontend
       run: |
-        rm -rf node_modules package-lock.json
-        npm cache clean --force
-        npm install
-        npm install react-router-dom @react-oauth/google @testing-library/jest-dom @testing-library/react @testing-library/user-event
-        CI=true npm test -- --passWithNoTests
+        npm ci
+        npm test -- --passWithNoTests
 
   build-and-push:
     needs: test
@@ -83,14 +80,20 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
 
+    - name: Verify frontend build context
+      run: |
+        ls -la frontend/
+        cat frontend/nginx.conf || echo "nginx.conf not found"
+
     - name: Build and push Frontend image
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         IMAGE_TAG: ${{ github.sha }}
       run: |
+        # Ensure nginx.conf exists
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:$IMAGE_TAG \
           -t $ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:latest \
-          -f frontend/Dockerfile.prod ./frontend
+          -f frontend/Dockerfile.prod .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:$IMAGE_TAG
         docker push $ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:latest
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:$IMAGE_TAG"
