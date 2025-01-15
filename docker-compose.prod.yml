@@ -2,18 +2,17 @@ version: '3.8'
 
 services:
   nginx:
-      build:
-        dockerfile: Dockerfile
-      ports:
-        - "80:80"
-        - "443:443"
-      volumes:
-        - ./nginx/nginx.prod.conf:/etc/nginx/nginx.conf:ro
-        - certbot-etc:/etc/letsencrypt
-        - certbot-var:/var/lib/letsencrypt
-        - webroot-path:/var/www/certbot
-      environment:
-        - NODE_ENV=production
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.prod.conf:/etc/nginx/nginx.conf:ro
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+      - webroot-path:/var/www/certbot
+    environment:
+      - NODE_ENV=production
         
   frontend:
     image: ${ECR_REGISTRY}/virusscanner-frontend:${IMAGE_TAG}
