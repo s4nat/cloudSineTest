@@ -89,7 +89,7 @@ jobs:
       run: |
         # Create production env file with secrets
         cd frontend
-        echo "REACT_APP_API_URL=${{ env.REACT_APP_API_URL }}" > .env.production
+        echo "REACT_APP_API_URL=https://ec2-54-255-196-98.ap-southeast-1.compute.amazonaws.com/api" > .env.production
         echo "REACT_APP_GOOGLE_CLIENT_ID=${{ secrets.REACT_APP_GOOGLE_CLIENT_ID }}" >> .env.production
         cd ..
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:$IMAGE_TAG \
