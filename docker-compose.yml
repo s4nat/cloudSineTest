@@ -11,8 +11,6 @@ services:
       - backend
 
   frontend:
-    build:
-      context: ./frontend
     expose:
       - "3000"
     networks:
@@ -21,8 +19,6 @@ services:
       - backend
 
   backend:
-    build:
-      context: ./backend
     expose:
       - "8080"
     networks:
