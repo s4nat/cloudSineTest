@@ -149,6 +149,8 @@ jobs:
           echo ECR_REGISTRY=$ECR_REGISTRY >> .env && \
           echo IMAGE_TAG=$IMAGE_TAG >> .env && \
           aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin $ECR_REGISTRY && \
+          sudo systemctl stop nginx || true && \
+          docker-compose -f docker-compose.yml -f $DOCKER_COMPOSE_OVERRIDE down || true && \
           docker-compose -f docker-compose.yml -f $DOCKER_COMPOSE_OVERRIDE pull && \
           docker-compose -f docker-compose.yml -f $DOCKER_COMPOSE_OVERRIDE up -d"
 
