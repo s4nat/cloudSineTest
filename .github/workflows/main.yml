@@ -144,6 +144,7 @@ jobs:
         DOCKER_COMPOSE_OVERRIDE: docker-compose.prod.yml
       run: |
         scp docker-compose.yml $DOCKER_COMPOSE_OVERRIDE ec2-user@${{ env.EC2_HOST }}:~/virusscanner/
+        scp nginx/nginx.prod.conf ec2-user@${{ env.EC2_HOST }}:~/virusscanner/nginx/
         ssh ec2-user@${{ env.EC2_HOST }} "cd ~/virusscanner && \
           echo AWS_REGION=${{ env.AWS_REGION }} >> .env && \
           echo ECR_REGISTRY=$ECR_REGISTRY >> .env && \
