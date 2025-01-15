@@ -61,11 +61,9 @@ const userIDKey contextKey = "userID"
 
 func (app *App) Initialize() {
 	// Load environment variables
-	_, workingDirectory := os.Getwd()
 	err := godotenv.Load()
 	if err != nil {
-		log.Printf("Working directory: %s", workingDirectory)
-		log.Fatal("Error loading .env file")
+		log.Printf("Error loading .env file")
 	}
 
 	// Initialize database connection
