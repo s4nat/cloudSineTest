@@ -2,8 +2,6 @@ version: '3.8'
 
 services:
   nginx:
-    build:
-      context: ./nginx
     networks:
       - app-network
     depends_on:
