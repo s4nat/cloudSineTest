@@ -143,9 +143,12 @@ jobs:
         IMAGE_TAG: ${{ github.sha }}
         DOCKER_COMPOSE_OVERRIDE: docker-compose.prod.yml
       run: |
-        ssh ec2-user@${{ env.EC2_HOST }} "mkdir -p ~/virusscanner/nginx"
+        ssh ec2-user@${{ env.EC2_HOST }} "mkdir -p /home/ec2-user/virusscanner/nginx && \
+          sudo chown -R ec2-user:ec2-user /home/ec2-user/virusscanner/nginx"
+
         scp docker-compose.yml $DOCKER_COMPOSE_OVERRIDE ec2-user@${{ env.EC2_HOST }}:~/virusscanner/
         scp ./nginx/nginx.prod.conf ec2-user@${{ env.EC2_HOST }}:~/virusscanner/nginx/
+        
         ssh ec2-user@${{ env.EC2_HOST }} "cd ~/virusscanner && \
           echo AWS_REGION=${{ env.AWS_REGION }} >> .env && \
           echo ECR_REGISTRY=$ECR_REGISTRY >> .env && \
