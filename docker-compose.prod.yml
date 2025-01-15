@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  nginx:
+      build:
+        dockerfile: Dockerfile
+      ports:
+        - "80:80"
+        - "443:443"
+      volumes:
+        - ./nginx/nginx.prod.conf:/etc/nginx/nginx.conf:ro
+        - certbot-etc:/etc/letsencrypt
+        - certbot-var:/var/lib/letsencrypt
+        - webroot-path:/var/www/certbot
+      environment:
+        - NODE_ENV=production
+        
+  frontend:
+    build:
+      dockerfile: Dockerfile.prod
+    environment:
+      - REACT_APP_API_URL=https://your-domain.com/api
+      - NODE_ENV=production
+
+  backend:
+    build:
+      dockerfile: Dockerfile.prod
+    environment:
+      - DATABASE_URL=postgres://username:password@your-rds-endpoint:5432/filescanner
+      - VIRUSTOTAL_API_KEY=${VIRUSTOTAL_API_KEY}
+      - JWT_SECRET=${JWT_SECRET}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - GO_ENV=production
+    restart: always

@@ -1,0 +1,19 @@
+FROM golang:1.23.4-alpine
+
+WORKDIR /app
+
+# Install git (required for some go dependencies)
+RUN apk add --no-cache git
+
+# Copy go mod files first
+COPY go.mod ./
+COPY go.sum ./
+
+# Download dependencies
+RUN go mod download
+
+# Copy the rest of the application
+COPY . .
+
+# Run the application
+CMD ["go", "run", "main.go"]
