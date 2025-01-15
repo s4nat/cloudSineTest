@@ -64,8 +64,8 @@ func (app *App) Initialize() {
 	_, workingDirectory := os.Getwd()
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal("Error loading .env file")
 		log.Printf("Working directory: %s", workingDirectory)
+		log.Fatal("Error loading .env file")
 	}
 
 	// Initialize database connection
