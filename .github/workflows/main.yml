@@ -58,11 +58,10 @@ jobs:
       working-directory: ./frontend
       run: |
         rm -rf node_modules package-lock.json
-        npm cache clean --force
-        npm install
-        npm install --save-dev @testing-library/jest-dom @testing-library/react @testing-library/user-event
-        npm install react-router-dom @react-oauth/google
-        npm test -- --passWithNoTests
+      npm cache clean --force
+      npm install
+      npm install react-router-dom @react-oauth/google @testing-library/jest-dom @testing-library/react @testing-library/user-event
+      CI=true npm test -- --passWithNoTests
 
   build-and-push:
     needs: test
