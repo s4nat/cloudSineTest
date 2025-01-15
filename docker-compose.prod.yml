@@ -16,13 +16,13 @@ services:
         - NODE_ENV=production
         
   frontend:
-    image: ${ECR_REGISTRY}/viruscanner-frontend:${IMAGE_TAG}
+    image: ${ECR_REGISTRY}/virusscanner-frontend:${IMAGE_TAG}
     environment:
       - REACT_APP_API_URL=https://your-domain.com/api
       - NODE_ENV=production
 
   backend:
-    image: ${ECR_REGISTRY}/viruscanner-backend:${IMAGE_TAG}
+    image: ${ECR_REGISTRY}/virusscanner-backend:${IMAGE_TAG}
     environment:
       - DATABASE_URL=postgres://username:password@your-rds-endpoint:5432/filescanner
       - VIRUSTOTAL_API_KEY=${VIRUSTOTAL_API_KEY}
