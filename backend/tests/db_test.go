@@ -6,6 +6,7 @@ import (
 	_ "github.com/lib/pq"
 	"log"
 	"os"
+	"strings"
 	"testing"
 )
 
@@ -22,6 +23,12 @@ func TestDatabaseConnection(t *testing.T) {
 	dbURL := os.Getenv("DATABASE_URL")
 	if dbURL == "" {
 		t.Fatal("DATABASE_URL environment variable not set")
+	}
+
+	t.Log("DATABASE_URL:", dbURL)
+	// Add sslmode=disable if not already in URL
+	if !strings.Contains(dbURL, "sslmode=") {
+		dbURL += "?sslmode=disable"
 	}
 
 	// Try to connect to the database
