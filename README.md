@@ -206,7 +206,44 @@ services:
 
 #### Jobs
 
-1. Build and Push
+1. Test Suite
+```yaml
+test:
+  runs-on: ubuntu-latest
+  
+  services:
+    postgres:
+      image: postgres:14
+      env:
+        POSTGRES_USER: test_user
+        POSTGRES_PASSWORD: test_password
+        POSTGRES_DB: test_db
+      ports:
+        - 5432:5432
+      options: >-
+        --health-cmd pg_isready
+        --health-interval 10s
+        --health-timeout 5s
+        --health-retries 5
+  
+  steps:
+    # Backend Tests
+    - Set up Go
+    - Test Backend with:
+      - Database connection tests
+      - VirusTotal API integration tests
+      - Build tests
+```
+
+The test suite includes:
+
+1. Backend Tests (`/backend/tests/`)
+   - `build_test.go`: Tests application initialization and environment setup
+   - `db_test.go`: Tests database connectivity and operations
+   - `virustotal_test.go`: Tests VirusTotal API integration
+
+
+2. Build and Push
 ```yaml
 build-and-push:
   runs-on: ubuntu-latest
@@ -217,7 +254,7 @@ build-and-push:
     - Build and push Backend image
 ```
 
-2. Deploy
+3. Deploy
 ```yaml
 deploy:
   needs: build-and-push
