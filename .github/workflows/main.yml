@@ -44,13 +44,13 @@ jobs:
       env:
         JWT_SECRET: your_very_secure_jwt_secret_key
         VIRUSTOTAL_API_KEY: ${{ secrets.VIRUSTOTAL_API_KEY }}
-        DATABASE_URL: postgres://test_user:test_password@localhost:5432/test_db?ssl=disable
+        DATABASE_URL: postgres://test_user:test_password@localhost:5432/test_db?sslmode=disable
       run: go test -v ./tests/build_test.go
 
     - name: Run Database Tests (Backend)
       working-directory: ./backend
       env:
-        DATABASE_URL: postgres://test_user:test_password@localhost:5432/test_db?ssl=disable
+        DATABASE_URL: postgres://test_user:test_password@localhost:5432/test_db?sslmode=disable
       run: go test -v ./tests/db_test.go
 
     - name: Run VirusTotal Integration Tests (Backend)
