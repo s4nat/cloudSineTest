@@ -13,56 +13,57 @@ env:
   EC2_HOST: ${{ secrets.EC2_HOST }}
 
 jobs:
-  # test:
-  #   runs-on: ubuntu-latest
+  test:
+    runs-on: ubuntu-latest
     
-  #   services:
-  #     postgres:
-  #       image: postgres:14
-  #       env:
-  #         POSTGRES_USER: test_user
-  #         POSTGRES_PASSWORD: test_password
-  #         POSTGRES_DB: test_db
-  #       ports:
-  #         - 5432:5432
-  #       options: >-
-  #         --health-cmd pg_isready
-  #         --health-interval 10s
-  #         --health-timeout 5s
-  #         --health-retries 5
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_USER: test_user
+          POSTGRES_PASSWORD: test_password
+          POSTGRES_DB: test_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+  
+    steps:
+    - uses: actions/checkout@v3
 
-  #   steps:
-  #   - uses: actions/checkout@v3
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.21'
 
-  #   # Backend tests
-  #   - name: Set up Go
-  #     uses: actions/setup-go@v4
-  #     with:
-  #       go-version: '1.21'
+    - name: Run Build Tests (Backend)
+      working-directory: ./backend
+      env:
+        JWT_SECRET: your_very_secure_jwt_secret_key
+        VIRUSTOTAL_API_KEY: ${{ secrets.VIRUSTOTAL_API_KEY }}
+        DATABASE_URL: postgres://test_user:test_password@localhost:5432/test_db
+      run: go test -v ./tests/build_test.go
 
-  #   - name: Test Backend
-  #     working-directory: ./backend
-  #     env:
-  #       DATABASE_URL: postgres://test_user:test_password@localhost:5432/test_db
-  #       JWT_SECRET: test_secret
-  #       VIRUSTOTAL_API_KEY: ${{ secrets.VIRUSTOTAL_API_KEY }}
-  #     run: go test -v ./...
+    - name: Run Database Tests (Backend)
+      working-directory: ./backend
+      env:
+        DATABASE_URL: postgres://test_user:test_password@localhost:5432/test_db
+      run: go test -v ./tests/db_test.go
 
-  #   # Frontend tests
-  #   - name: Set up Node.js
-  #     uses: actions/setup-node@v3
-  #     with:
-  #       node-version: '18'
+    - name: Run VirusTotal Integration Tests (Backend)
+      working-directory: ./backend
+      env:
+        VIRUSTOTAL_API_KEY: ${{ secrets.VIRUSTOTAL_API_KEY }}
+      run: go test -v ./tests/virustotal_test.go
+      
+      
 
-  #   - name: Test Frontend
-  #     working-directory: ./frontend
-  #     run: |
-  #       npm install
-  #       npm install react-router-dom @react-oauth/google @testing-library/jest-dom @testing-library/react @testing-library/user-event
-  #       CI=true npm test -- --passWithNoTests
 
   build-and-push:
-    # needs: test
+    needs: test
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     
