@@ -63,18 +63,21 @@ const FileList = () => {
     );
   }
 
+   // Ensure files is an array
+   const filesList = Array.isArray(files) ? files : [];
+
   return (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold text-white">Uploaded Files</h2>
       
       <div className="grid gap-4">
-        {files.length === 0 ? (
+        {filesList.length === 0 ? (
           <div className="text-center py-12 bg-gray-800/30 rounded-lg border border-gray-700">
             <FileText className="mx-auto h-12 w-12 text-gray-500 mb-3" />
             <p className="text-gray-400">No files uploaded yet</p>
           </div>
         ) : (
-          files.map((file) => {
+          filesList.map((file) => {
             const StatusIcon = getStatusIcon(file.status);
             return (
               <div
