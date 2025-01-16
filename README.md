@@ -290,3 +290,7 @@ ssh ec2-user@$EC2_HOST "cd ~/virusscanner && \
 - JWT tokens for API authentication
 - CORS configured for specific origins
 - File upload size limits enforced at Nginx level
+
+## Architecture Diagram
+![Screenshot 2025-01-16 at 3 41 18 PM](https://github.com/user-attachments/assets/7a0b937e-0dd3-4669-875b-095524e44e81)
+
