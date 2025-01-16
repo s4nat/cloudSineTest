@@ -44,7 +44,7 @@ jobs:
       env:
         JWT_SECRET: your_very_secure_jwt_secret_key
         VIRUSTOTAL_API_KEY: ${{ secrets.VIRUSTOTAL_API_KEY }}
-        DATABASE_URL: postgres://test_user:test_password@localhost:5432/test_db
+        DATABASE_URL: postgres://test_user:test_password@localhost:5432/test_db?ssl=disabled
       run: go test -v ./tests/build_test.go
 
     - name: Run Database Tests (Backend)
