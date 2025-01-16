@@ -1,6 +1,6 @@
 # cloudSineTest
 # VirusScanner Project Documentation
-[Live App](ec2-54-255-196-98.ap-southeast-1.compute.amazonaws.com)
+[Live App](https://ec2-54-255-196-98.ap-southeast-1.compute.amazonaws.com)
 
 ## Table of Contents
 - [Overview](#overview)
