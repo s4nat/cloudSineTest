@@ -50,7 +50,7 @@ jobs:
     - name: Run Database Tests (Backend)
       working-directory: ./backend
       env:
-        DATABASE_URL: postgres://test_user:test_password@localhost:5432/test_db
+        DATABASE_URL: postgres://test_user:test_password@localhost:5432/test_db?ssl=disable
       run: go test -v ./tests/db_test.go
 
     - name: Run VirusTotal Integration Tests (Backend)
