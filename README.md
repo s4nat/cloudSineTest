@@ -1,5 +1,5 @@
 # cloudSineTest
-# File Scanner Project Documentation
+# VirusScanner Project Documentation
 
 ## Table of Contents
 - [Overview](#overview)
@@ -12,7 +12,7 @@
 
 ## Overview
 
-The File Scanner project is a web application that allows users to upload files and scan them for potential security threats using the VirusTotal API. The application is built using React for the frontend, Go for the backend, and uses PostgreSQL for data storage.
+The VirusScanner project is a web application that allows users to upload files and scan them for potential security threats using the VirusTotal API. The application is built using React for the frontend, Go for the backend, and uses PostgreSQL for data storage.
 
 ## Frontend Architecture
 
