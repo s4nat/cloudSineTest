@@ -9,6 +9,7 @@
 - [Database Setup](#database-setup)
 - [Docker Configuration](#docker-configuration)
 - [CI/CD Pipeline](#cicd-pipeline)
+- [Architecture Diagram](#architecture-diagram)
 
 ## Overview
 
